@@ -7,14 +7,14 @@ import (
 	"strconv"
 )
 
-//Client-2-Server setup struct
+//ClientRequestHandler client2server setup struct
 type ClientRequestHandler struct {
 	ServerHost string
 	ServerPort int
 }
 
+//SendReceive sends and receives []bytes
 func (crh ClientRequestHandler) SendReceive(msg2Server []byte) []byte {
-
 	var conn net.Conn
 	var err error
 	for {
@@ -22,13 +22,11 @@ func (crh ClientRequestHandler) SendReceive(msg2Server []byte) []byte {
 		if err == nil {
 			break
 		}
-
 	}
 
 	defer conn.Close()
 
-	// send{ messsage size, message } ; receive {message size, message}
-
+	// send messsage size, message
 	msg2ServerSize := make([]byte, 4)
 	l := uint32(len(msg2Server))
 	binary.LittleEndian.PutUint32(msg2ServerSize, l)
@@ -42,6 +40,7 @@ func (crh ClientRequestHandler) SendReceive(msg2Server []byte) []byte {
 		log.Fatalf("CRH:: %s", err)
 	}
 
+	//receive message size, message
 	msgFromServerSize := make([]byte, 4)
 	_, err = conn.Read(msgFromServerSize)
 	if err != nil {

@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-//Server-2-Client setup struct
+//ServerRequestHandler server2client setup struct
 type ServerRequestHandler struct {
 	ServerHost string
 	ServerPort int
@@ -17,8 +17,7 @@ var ln net.Listener
 var conn net.Conn
 var err error
 
-//send and receive []byte
-
+//Send the []bytes
 func (ServerRequestHandler) Send(msg2Client []byte) {
 	//message size, message
 
@@ -38,10 +37,10 @@ func (ServerRequestHandler) Send(msg2Client []byte) {
 	conn.Close()
 	ln.Close()
 }
-
+//Receive the []bytes
 func (srh ServerRequestHandler) Receive() []byte {
-	//listener, accept connections, message size, message
 
+	//listener, accept connections, message size, message
 	ln, err = net.Listen("tcp", srh.ServerHost+":"+strconv.Itoa(srh.ServerPort))
 	if err != nil {
 		log.Fatalf("SRH:: %s", err)

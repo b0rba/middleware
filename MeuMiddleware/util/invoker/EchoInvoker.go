@@ -28,14 +28,7 @@ func NewEchoInvoker() EchoInvoker {
 	return *p
 }
 
-// Invoke is a funcion to set the server running.
-//
-// Parameters:
-//  none
-//
-// Returns:
-//  none
-//
+// Invoke set the server running.
 func (EchoInvoker) Invoke (){
 	srhImpl := serverRequestHandler.ServerRequestHandler{ServerHost:"localhost",ServerPort:8080}
 	marshallerImpl := marshaller.Marshaller{}
@@ -54,9 +47,8 @@ func (EchoInvoker) Invoke (){
 		// Receive data
 		rcvMsgBytes := srhImpl.Receive()
 
-		// 	unmarshall
+		// unmarshall
 		miopPacketRequest := marshallerImpl.Unmarshall(rcvMsgBytes)
-		
 		
 		// setup request
 		_s1 := int(miopPacketRequest.Bd.ReqBody.Body[0].(float64))
