@@ -1,10 +1,10 @@
 package invoker
 
 import (
-	"github.com/b0rba/middleware/MeuMiddleware/utils/marshaller"
+	"github.com/b0rba/middleware/MeuMiddleware/util/marshaller"
 	"github.com/b0rba/middleware/MeuMiddleware/infrastructure/serverRequestHandler"
-	"github.com/b0rba/middleware/MeuMiddleware/utils/miop"
-	"github.com/b0rba/middleware/MeuMiddleware/utils/lifecycle_manager/pooling"
+	"github.com/b0rba/middleware/MeuMiddleware/util/miop"
+	"github.com/b0rba/middleware/MeuMiddleware/util/lifecycle_manager/pooling"
 	"github.com/b0rba/middleware/MeuMiddleware/echo/impl"
 )
 

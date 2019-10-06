@@ -2,15 +2,15 @@ package requestor
 
 import (
 	"github.com/b0rba/middleware/MeuMiddleware/infrastructure/clientRequestHandler"
-	"github.com/b0rba/middleware/MeuMiddleware/utils/aux"
-	"github.com/b0rba/middleware/MeuMiddleware/utils/marshaller"
-	"github.com/b0rba/middleware/MeuMiddleware/utils/miop"
+	"github.com/b0rba/middleware/MeuMiddleware/marshaller"
+	"github.com/b0rba/middleware/MeuMiddleware/util/aux"
+	"github.com/b0rba/middleware/MeuMiddleware/util/miop"
 )
 
-// enable Requestor funcions
+// Requestor enable Requestor funcions
 type Requestor struct{}
 
-// receives a Invocation and returns a Interface based on the Invocation parameters
+// Invoke receives a Invocation and returns a Interface based on the Invocation parameters
 func (Requestor) Invoke(inv aux.Invocation) interface{} {
 	marshallerInst := marshaller.Marshaller{}
 	crhInst := clientRequestHandler.ClientRequestHandler{ServerHost: inv.Host, ServerPort: inv.Port}
@@ -18,7 +18,7 @@ func (Requestor) Invoke(inv aux.Invocation) interface{} {
 	// create
 	reqHeader := miop.RequestHeader{Context: "Context", RequestId: 1000, ResponseExpected: true, ObjectKey: 2000, Operation: inv.Request.Op}
 	reqBody := miop.RequestBody{Body: inv.Request.Params}
-	header := miop.Header{Magic: "MIOP", Version: "1.0", ByteOrder: true, MessageType: 1} // MessageType = 1 == Request
+	header := miop.Header{Magic: "MIOP", Version: "1.0", ByteOrder: true, MessageType: 1} // 1 == Request
 	body := miop.Body{ReqHeader: reqHeader, ReqBody: reqBody}
 	miopPacketRequest := miop.Packet{Hdr: header, Bd: body}
 

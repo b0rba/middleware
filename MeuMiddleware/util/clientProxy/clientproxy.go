@@ -1,8 +1,8 @@
 package clientproxy
 
 import (
-	"github.com/b0rba/middleware/MeuMiddleware/utils/requestor"
-	"github.com/b0rba/middleware/MeuMiddleware/utils/aux"
+	"github.com/b0rba/middleware/MeuMiddleware/util/requestor"
+	"github.com/b0rba/middleware/MeuMiddleware/util/aux"
 	"github.com/b0rba/middleware/MeuMiddleware/identification/aObjectReference"
 )
 // ClientProxy is a struct that holds the data need to contact the server

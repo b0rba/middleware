@@ -3,7 +3,7 @@ package marshaller
 import (
 	"encoding/json"
 	"log"
-	"github.com/b0rba/middleware/MeuMiddleware/utils/miop"
+	"github.com/b0rba/middleware/MeuMiddleware/util/miop"
 )
 
 type Marshaller struct{}
