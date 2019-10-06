@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"net/rpc"
 	"strconv"
 	"time"
@@ -22,7 +23,6 @@ func main() {
 	// make requests
 	for i := 0; i < numberOfCalls; i++ {
 		// prepara request
-
 		args := fmt.Sprintf("%s:%d", "string number:", i)
 
 		initialTime := time.Now()
