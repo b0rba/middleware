@@ -2,7 +2,7 @@ package impl
 
 type EchoRPC struct{}
 
-func (t *EchoRPC) Echo(req int, reply *int) error {
-	*reply = req * 2
+func (t *EchoRPC) Echo(req string, reply *string) error {
+	*reply = req
 	return nil
 }

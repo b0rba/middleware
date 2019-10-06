@@ -22,11 +22,12 @@ func main() {
 	// make requests
 	for i := 0; i < numberOfCalls; i++ {
 		// prepara request
-		args := i
+
+		args := fmt.Sprintf("%s:%d", "string number:", i)
 
 		initialTime := time.Now()
 		// envia request e recebe resposta
-		client.Call("Multiplicador.Mul", args, &reply)
+		client.Call("Echo.Echo", args, &reply)
 
 		endTime := float64(time.Now().Sub(initialTime).Milliseconds()) // RTT
 		utils.AddValue(&calc, endTime)
