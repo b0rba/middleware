@@ -5,7 +5,7 @@ type ClientProxy struct {
 	Host     string
 	Port     int
 	ID       int
-	nameType string
+	TypeName string
 }
 
 // InitClientProxy initializes a client proxy.
@@ -14,6 +14,6 @@ func InitClientProxy(host string, port, id int, nameType string) ClientProxy {
 	clientProxy.Host = host
 	clientProxy.Port = port
 	clientProxy.ID = id
-	clientProxy.nameType = nameType
+	clientProxy.TypeName = nameType
 	return clientProxy
 }
