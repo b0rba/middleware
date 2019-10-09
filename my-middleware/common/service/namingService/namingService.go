@@ -6,24 +6,12 @@ import (
 	"github.com/b0rba/middleware/my-middleware/common/distribution/clientproxy"
 )
 
-// NamingService is a structure for holding all the names.
-//
-// Members:
-//  Repository - a map with the name as key and the client proxy as value.
-//
+// NamingService hold all the names.
 type NamingService struct {
 	Repository map[string]clientproxy.ClientProxy
 }
 
-// Bind is a function to add a name to the repository.
-//
-// Parameters:
-//  name  - the name to be added.
-//  proxy - the ClientProxy to with the name key.
-//
-// Returns:
-//  an error if was unable to add the ClientProxy.
-//
+// Bind adds a name to the repository.
 func (naming *NamingService) Bind(name string, proxy clientproxy.ClientProxy) error {
 	_, present := naming.Repository[name]
 	if present {
@@ -33,32 +21,17 @@ func (naming *NamingService) Bind(name string, proxy clientproxy.ClientProxy) er
 	return nil
 }
 
-// Lookup is a function to get a ClientProxy from the repository.
-//
-// Parameters:
-//  name - the name key to the ClientProxy.
-//
-// Returns:
-//  the ClientProxy.
-//  an error if was unable to find the name.
-//
+// Lookup gets a ClientProxy from the repository.
 func (naming *NamingService) Lookup(name string) (clientproxy.ClientProxy, error) {
-	cp, present := naming.Repository[name]
+	clientProxy, present := naming.Repository[name]
 	if !present {
 		var nilClientProxy clientproxy.ClientProxy // cannot return nil for struct
 		return nilClientProxy, errors.New(name + " not found on the naming service.")
 	}
-	return cp, nil
+	return clientProxy, nil
 }
 
-// List is a function to return all data in the naming service.
-//
-// Parameters:
-//  none
-//
-// Returns:
-//  all data in the naming service.
-//
+// List returns all data in the naming service.
 func (naming *NamingService) List() map[string]clientproxy.ClientProxy {
 	return naming.Repository
 }

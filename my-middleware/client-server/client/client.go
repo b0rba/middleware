@@ -9,43 +9,29 @@ import (
 	"github.com/b0rba/middleware/my-middleware/common/utils"
 )
 
-// runExperiment is a function to run the experiment.
-//
-// Parameters:
-//  numberOfCalls - the total number of calls.
-//
-// Returns:
-//  none
-//
-func runExperiment(numberOfCalls int, wg *sync.WaitGroup, calc *utils.CalcValues, start int) {
-	defer wg.Done()
+// runExperiment run the experiment.
+func runExperiment(numberOfCalls int, waitGroup *sync.WaitGroup, calcValues *utils.CalcValues, start int) {
+	defer waitGroup.Done()
 	// getting the clientproxy
 	namingServer := proxies.InitServer("localhost")
-	calculator := namingServer.Lookup("Calculator").(proxies.CalculatorProxy)
+	echo := namingServer.Lookup("Echo").(proxies.EchoProxy)
 
 	// executing
 	for i := 0; i < numberOfCalls; i++ {
 		initialTime := time.Now() //calculating time
-		result := calculator.Mul(i + start)
+		result := echo.Ech(i + start)
 		endTime := float64(time.Now().Sub(initialTime).Milliseconds()) // RTT
 		fmt.Println(result)                                            // making the request
-		utils.AddValue(calc, endTime)                                  // pushing to the stored values
+		utils.AddValue(calcValues, endTime)                            // pushing to the stored values
 		time.Sleep(10 * time.Millisecond)                              // setting the sleep time
 	}
 }
 
-// doSomething is a function to do some random stuff while the client is making requests.
-//
-// Parameters:
-//  none
-//
-// Returns:
-//  none
-//
-func doSomething() {
-	for j := 0; j < 10; j++ {
-		time.Sleep(50 * time.Millisecond)
-		j--
+// goSleep just sleep so the client can mak the requests
+func goSleep() {
+	for i := 0; i < 5; i++ {
+		time.Sleep(100 * time.Millisecond)
+		i--
 	}
 }
 
@@ -54,20 +40,20 @@ func main() {
 	perCall := 500
 	aux := numberOfCalls / perCall
 	// creating the calcvalues object
-	calc := utils.InitCalcValues(make([]float64, numberOfCalls, numberOfCalls))
-	var wg sync.WaitGroup
-	go doSomething()
+	calcValues := utils.InitCalcValues(make([]float64, numberOfCalls, numberOfCalls))
+	var waitGroup sync.WaitGroup
+	go goSleep()
 
 	for i := 0; i < aux; i++ {
-		wg.Add(1)
-		go runExperiment(perCall, &wg, &calc, (i * perCall))
-		wg.Wait()
+		waitGroup.Add(1)
+		go runExperiment(perCall, &waitGroup, &calcValues, (i * perCall))
+		waitGroup.Wait()
 	}
 
 	// evaluating
-	avrg := utils.CalcAverage(&calc)
-	stdv := utils.CalcStandardDeviation(&calc, avrg)
+	average := utils.CalcAverage(&calcValues)
+	stdv := utils.CalcStandardDeviation(&calcValues, average)
 
-	utils.PrintEvaluation(avrg, stdv, 8)
+	utils.PrintEvaluation(average, stdv, 8)
 
 }

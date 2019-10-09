@@ -19,34 +19,25 @@ type CRH struct {
 	ServerPort int
 }
 
-// SendReceive is a funcion that receives a byte package and sends it to a server
-//
-// Parameters:
-//  msgToServer - Package to be sent
-//
-// Returns:
-//  Message received from server
-//
-func (crh CRH) SendReceive(msgToServer []byte) []byte {
-
+// SendReceive receives a byte package and sends it to a server
+func (clientRequestHandler CRH) SendReceive(msgToServer []byte) []byte {
 	// connect to server
 	var conn net.Conn
 	var err error
 	for {
-		conn, err = net.Dial("tcp", "localhost:"+strconv.Itoa(crh.ServerPort))
+		conn, err = net.Dial("tcp", "localhost:"+strconv.Itoa(clientRequestHandler.ServerPort))
 		if err == nil {
 			// connected to server.
 			break
 		}
-
 	}
 	defer conn.Close()
 
 	// send message size
-	sizeMsgToServer := make([]byte, 4)
-	l := uint32(len(msgToServer))
-	binary.LittleEndian.PutUint32(sizeMsgToServer, l)
-	conn.Write(sizeMsgToServer)
+	msg2ServeSize := make([]byte, 4)
+	length := uint32(len(msgToServer))
+	binary.LittleEndian.PutUint32(msg2ServeSize, length)
+	conn.Write(msg2ServeSize)
 	utils.PrintError(err, "unable to write size to server on client request handler")
 
 	// send message

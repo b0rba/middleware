@@ -25,8 +25,8 @@ type Pool struct {
 // Returns:
 //  none
 //
-func (cPool *Pool) AddToPool(serv interface{}) {
-	cPool.Servants = append(cPool.Servants, serv)
+func (ePool *Pool) AddToPool(serv interface{}) {
+	ePool.Servants = append(ePool.Servants, serv)
 }
 
 // GetFromPool is a function to get a servant from the pool.
@@ -37,13 +37,13 @@ func (cPool *Pool) AddToPool(serv interface{}) {
 // Returns:
 //  the servant.
 //
-func (cPool *Pool) GetFromPool() interface{} {
-	if len(cPool.Servants) <= 0 {
+func (ePool *Pool) GetFromPool() interface{} {
+	if len(ePool.Servants) <= 0 {
 		utils.PrintError(errors.New("empty pool"), "unable to get object from empty pool.")
 		return nil
 	}
-	servHolder := cPool.Servants[cPool.CurrentIdx]
-	cPool.CurrentIdx = (cPool.CurrentIdx + 1) % len(cPool.Servants)
+	servHolder := ePool.Servants[ePool.CurrentIdx]
+	ePool.CurrentIdx = (ePool.CurrentIdx + 1) % len(ePool.Servants)
 	return servHolder
 }
 
@@ -62,15 +62,8 @@ func EndPool(cPool *Pool) {
 	cPool = nil
 }
 
-// InitPool is a function to initialize a pool.
-//
-// Parameters:
-//  servs - the servants of the pool.
-//
-// Returns:
-//  the pool.
-//
+// InitPool initialize a pool.
 func InitPool(servs []interface{}) *Pool {
-	calcP := Pool{Servants: servs, CurrentIdx: 0}
-	return &calcP
+	echoP := Pool{Servants: servs, CurrentIdx: 0}
+	return &echoP
 }

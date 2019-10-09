@@ -31,55 +31,55 @@ type Server struct {
 // Returns:
 //  none
 //
-func (sv Server) Run() {
+func (server Server) Run() {
 	marshallerImpl := marshaller.Marshaller{}
-	packetPacketReply := packet.Packet{}
-	var replParams []interface{}
+	packetReply := packet.Packet{}
+	var params []interface{}
 	fmt.Println("Naming service on.")
 
 	for {
-		srhImpl := srh.SRH{ServerHost: sv.IP, ServerPort: sv.Port}
+		serverRequestHandlerImpl := srh.SRH{ServerHost: server.IP, ServerPort: server.Port}
 
 		// Receive data
-		rcvMsgBytes := (&srhImpl).Receive()
+		receiveMsgBytes := (&serverRequestHandlerImpl).Receive()
 
 		// 	unmarshall
-		packetPacketRequest := marshallerImpl.Unmarshall(rcvMsgBytes)
+		packetRequest := marshallerImpl.Unmarshall(receiveMsgBytes)
 
 		// finding the operation
-		operation := packetPacketRequest.Bd.ReqHeader.Operation
+		operation := packetRequest.Bd.ReqHeader.Operation
 		switch operation {
 		case "Lookup":
-			p1 := packetPacketRequest.Bd.ReqBody.Body[0].(string)
-			replParams = make([]interface{}, 2)
-			replParams[0], replParams[1] = sv.NS.Lookup(p1)
+			packet := packetRequest.Bd.ReqBody.Body[0].(string)
+			params = make([]interface{}, 2)
+			params[0], params[1] = server.NS.Lookup(packet)
 		case "Bind":
-			bd := packetPacketRequest.Bd.ReqBody.Body
-			p1 := bd[0].(string)
-			bdConv := bd[1].(map[string]interface{})
-			p2 := clientproxy.InitClientProxy(bdConv["Host"].(string), int(bdConv["Port"].(float64)), int(bdConv["ID"].(float64)), bdConv["TypeName"].(string))
-			replParams = make([]interface{}, 1)
-			replParams[0] = sv.NS.Bind(p1, p2)
-			if replParams[0] != nil {
-				replParams[0] = replParams[0].(error)
+			packetBody := packetRequest.Bd.ReqBody.Body
+			packet := packetBody[0].(string)
+			packetBodyString := packetBody[1].(map[string]interface{})
+			packet2 := clientproxy.InitClientProxy(packetBodyString["Host"].(string), int(packetBodyString["Port"].(float64)), int(packetBodyString["ID"].(float64)), packetBodyString["nameType"].(string))
+			params = make([]interface{}, 1)
+			params[0] = server.NS.Bind(packet, packet2)
+			if params[0] != nil {
+				params[0] = params[0].(error)
 			}
 		case "List":
-			replParams = make([]interface{}, 1)
-			replParams[0] = sv.NS.List()
+			params = make([]interface{}, 1)
+			params[0] = server.NS.List()
 		}
 
-		// assembly packet
-		repHeader := packet.ReplyHeader{Context: "", RequestID: packetPacketRequest.Bd.ReqHeader.RequestID, Status: 1}
-		repBody := packet.ReplyBody{OperationResult: replParams}
-		header := packet.Header{Magic: "packet", Version: "1.0", ByteOrder: true, MessageType: 0} // MessageType 0 = reply
-		body := packet.Body{RepHeader: repHeader, RepBody: repBody}
-		packetPacketReply = packet.Packet{Hdr: header, Bd: body}
+		// assembly packetBody
+		replyHeader := packet.ReplyHeader{Context: "", RequestID: packetRequest.Bd.ReqHeader.RequestID, Status: 1}
+		replyBody := packet.ReplyBody{OperationResult: params}
+		header := packet.Header{Magic: "packetBody", Version: "1.0", ByteOrder: true, MessageType: 0} // MessageType 0 = reply
+		body := packet.Body{RepHeader: replyHeader, RepBody: replyBody}
+		packetReply = packet.Packet{Hdr: header, Bd: body}
 
 		// marshall reply
-		msgToClientBytes := marshallerImpl.Marshall(packetPacketReply)
+		msg2ClientBytes := marshallerImpl.Marshall(packetReply)
 
 		// send Reply
-		(&srhImpl).Send(msgToClientBytes)
+		(&serverRequestHandlerImpl).Send(msg2ClientBytes)
 	}
 }
 
@@ -92,8 +92,8 @@ func (sv Server) Run() {
 //  the running server.
 //
 func InitServer() Server {
-	cpMap := make(map[string]clientproxy.ClientProxy)
-	ns := namingService.NamingService{Repository: cpMap}
-	sv := Server{NS: &ns, IP: "localhost", Port: 8090}
-	return sv
+	clientProxyMaps := make(map[string]clientproxy.ClientProxy)
+	namingS := namingService.NamingService{Repository: clientProxyMaps}
+	server := Server{NS: &namingS, IP: "localhost", Port: 8090}
+	return server
 }

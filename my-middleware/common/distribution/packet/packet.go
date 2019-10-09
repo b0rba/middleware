@@ -1,25 +1,12 @@
 package packet
 
-// Packet is a structure for the default packet format.
-//
-// Members:
-//  Hdr - the header of the packet.
-//  Bd  - the body of the pacet.
-//
+// Packet default packet format.
 type Packet struct {
 	Hdr Header
 	Bd  Body
 }
 
-// Header is a structure for holding the information of the header.
-//
-// Member:
-//  Magic       - packet standard.
-//  Version     - verion of the protocol.
-//  ByteOrder   - byte ordering.
-//  MessageType - the type of the message.
-//  Size        - size of the packet.
-//
+// Header information of the header.
 type Header struct {
 	Magic       string
 	Version     string
@@ -28,14 +15,7 @@ type Header struct {
 	Size        int
 }
 
-// Body is a structure for holding the information of the body of the packet.
-//
-// Member:
-//  ReqHeader   - body header for request.
-//  ReqBody     - body body for request.
-//  RepHeader   - body header for reply.
-//  RepBody     - body body for reply.
-//
+// Body of the packet.
 type Body struct {
 	ReqHeader RequestHeader
 	ReqBody   RequestBody
@@ -43,15 +23,7 @@ type Body struct {
 	RepBody   ReplyBody
 }
 
-// RequestHeader is a structure for headers from requests.
-//
-// Member:
-//  Context          - the context.
-//  RequestID        - the id of the request.
-//  ResponseExpected - flag for response.
-//  ObjectKey        - the key of the object.
-//  Operation        - the operation to be performed.
-//
+// RequestHeader headers from requests.
 type RequestHeader struct {
 	Context          string
 	RequestID        int
@@ -60,33 +32,19 @@ type RequestHeader struct {
 	Operation        string
 }
 
-// RequestBody is a structure for bodies from requests.
-//
-// Member:
-//  Body - the body data.
-//
+// RequestBody bodies from requests.
 type RequestBody struct {
 	Body []interface{}
 }
 
-// ReplyHeader is a structure for headers from replies.
-//
-// Member:
-//  Context   - the context.
-//  RequestID - the id of the request.
-//  Status    - the status.
-//
+// ReplyHeader headers from replies.
 type ReplyHeader struct {
 	Context   string
 	RequestID int
 	Status    int
 }
 
-// ReplyBody is a structure for bodies from replies.
-//
-// Member:
-//  OperationResult - the result of the request.
-//
+// ReplyBody bodies from replies.
 type ReplyBody struct {
 	OperationResult []interface{}
 }

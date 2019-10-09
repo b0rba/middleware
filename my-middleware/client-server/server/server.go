@@ -13,17 +13,17 @@ func main() {
 	// setting the naming server on
 	namingServer := proxies.InitServer()
 	go namingServer.Run()
-	// registering the calculator
-	var cp clientproxy.ClientProxy
-	cp = clientproxy.InitClientProxy("localhost", 8080, 2030, "Calculator")
-	nclient := namingClient.InitServer(cp.Host)
-	nclient.Bind("Calculator", cp)
-	fmt.Println("Calculator registered!")
+	// registering the echoer
+	var clientProxy clientproxy.ClientProxy
+	clientProxy = clientproxy.InitClientProxy("localhost", 8080, 2030, "Echo")
+	serverNamingClient := namingClient.InitServer(clientProxy.Host)
+	serverNamingClient.Bind("Echo", clientProxy)
+	fmt.Println("Echo registered ((:")
 	// control loop passed to middleware
-	fmt.Println("Multiplicator Server running!!")
-	calcInvoker := invoker.CalculatorInvoker{}
+	fmt.Println("Running Echoer Server ((: ")
+	echoInvoker := invoker.EchoInvoker{}
 
-	go calcInvoker.Invoke()
-	c := make(chan int)
-	<-c
+	go echoInvoker.Invoke()
+	aux := make(chan int)
+	<-aux
 }
