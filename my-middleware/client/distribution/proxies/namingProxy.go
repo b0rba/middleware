@@ -28,7 +28,7 @@ func (server Server) Lookup(name string) interface{} {
 		utils.PrintError(err, "unable to lookup on naming proxy")
 	}
 	replyMap := reply[0].(map[string]interface{})
-	clientProxy := clientproxy.InitClientProxy(replyMap["Host"].(string), int(replyMap["Port"].(float64)), int(replyMap["ID"].(float64)), replyMap["nameType"].(string))
+	clientProxy := clientproxy.InitClientProxy(replyMap["Host"].(string), int(replyMap["Port"].(float64)), int(replyMap["ID"].(float64)), replyMap["TypeName"].(string))
 
 	// get the result
 	var result interface{}

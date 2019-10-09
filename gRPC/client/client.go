@@ -40,5 +40,5 @@ func main() {
 	avrg := utils.CalcAverage(&calc)
 	stdv := utils.CalcStandardDeviation(&calc, avrg)
 
-	utils.PrintEvaluation(avrg, stdv)
+	utils.PrintEvaluation(avrg, stdv, 8)
 }

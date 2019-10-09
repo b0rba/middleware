@@ -19,8 +19,8 @@ func runExperiment(waitGroup *sync.WaitGroup, calcValues *utils.CalcValues, numb
 	// executing
 	for i := 0; i < numberOfCalls; i++ {
 		initialTime := time.Now() //calculating time
-		result := echo.Ech(i + start)
-		endTime := float64(time.Now().Sub(initialTime).Milliseconds()) // RTT
+		result := echo.Ech(string(i))
+		endTime := float64(time.Now().Sub(initialTime)) // RTT
 		fmt.Println(result)                                            // making the request
 		utils.AddValue(calcValues, endTime)                            // pushing to the stored values
 		time.Sleep(10 * time.Millisecond)                              // setting the sleep time

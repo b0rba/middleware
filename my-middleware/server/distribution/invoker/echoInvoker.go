@@ -40,7 +40,7 @@ func (EchoInvoker) Invoke (){
 		packetPacketRequest := marshallerImpl.Unmarshall(receiverMessageBytes)
 
 		// setup request
-		packetRequest := int(packetPacketRequest.Bd.ReqBody.Body[0].(float64))
+		packetRequest := string(packetPacketRequest.Bd.ReqBody.Body[0].(string))
 		var echo1 *echoer.Echo
 		echo1 = echoPool.GetFromPool().(*echoer.Echo)
 
