@@ -36,7 +36,7 @@ func (server Server) Lookup(name string) interface{} {
 	case "Echo":
 		result = EchoProxy{Host: clientProxy.Host, Port: clientProxy.Port, ID: clientProxy.ID}
 	default:
-		utils.PrintError(errors.New("unrecognized clientproxy type"), "type of the clientproxy: "+clientProxy.TypeName)
+		utils.PrintError(errors.New("type unrecognized"), "type of clientproxy: " + clientProxy.TypeName)
 	}
 	return result
 }

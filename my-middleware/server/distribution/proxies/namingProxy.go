@@ -30,21 +30,25 @@ func (server Server) Run() {
 		// Receive data
 		receiveMsgBytes := (&serverRequestHandlerImpl).Receive()
 
-		// 	unmarshall
+		// Unmarshall
 		packetRequest := marshallerImpl.Unmarshall(receiveMsgBytes)
 
-		// finding the operation
+		// get the operation
 		operation := packetRequest.Bd.ReqHeader.Operation
 		switch operation {
 		case "Lookup":
 			packetRqst := packetRequest.Bd.ReqBody.Body[0].(string)
 			params = make([]interface{}, 2)
-			params[0], params[1] = server.NS.Lookup(packetRqst)
+			params[0], params[1] = server.NS.Lookup(packetRqst) // get clientProxy from repo
 		case "Bind":
 			packetRqstBody := packetRequest.Bd.ReqBody.Body
 			packetRqstBodyString := packetRqstBody[0].(string)
 			packetBodyString := packetRqstBody[1].(map[string]interface{})
-			packet2 := clientproxy.InitClientProxy(packetBodyString["Host"].(string), int(packetBodyString["Port"].(float64)), int(packetBodyString["ID"].(float64)), packetBodyString["nameType"].(string))
+			packet2 := clientproxy.InitClientProxy(
+				packetBodyString["Host"].(string),
+				int(packetBodyString["Port"].(float64)),
+				int(packetBodyString["ID"].(float64)),
+				packetBodyString["nameType"].(string))
 			params = make([]interface{}, 1)
 			params[0] = server.NS.Bind(packetRqstBodyString, packet2)
 			if params[0] != nil {
@@ -58,7 +62,7 @@ func (server Server) Run() {
 		// assembly packetRqstBody
 		replyHeader := packet.ReplyHeader{Context: "", RequestID: packetRequest.Bd.ReqHeader.RequestID, Status: 1}
 		replyBody := packet.ReplyBody{OperationResult: params}
-		header := packet.Header{Magic: "packetRqstBody", Version: "1.0", ByteOrder: true, MessageType: 0} // MessageType 0 = reply
+		header := packet.Header{Magic: "packetRqstBody", Version: "1.0", ByteOrder: true, MessageType: 0} // reply == 0
 		body := packet.Body{RepHeader: replyHeader, RepBody: replyBody}
 		packetReply = packet.Packet{Hdr: header, Bd: body}
 

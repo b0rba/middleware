@@ -15,7 +15,7 @@ type NamingService struct {
 func (naming *NamingService) Bind(name string, proxy clientproxy.ClientProxy) error {
 	_, present := naming.Repository[name]
 	if present {
-		return errors.New("Unable to bind " + name + ". This name is already on the naming service.")
+		return errors.New("Unable to bind " + name + ". Name already exists.")
 	}
 	naming.Repository[name] = proxy
 	return nil
@@ -26,7 +26,7 @@ func (naming *NamingService) Lookup(name string) (clientproxy.ClientProxy, error
 	clientProxy, present := naming.Repository[name]
 	if !present {
 		var nilClientProxy clientproxy.ClientProxy // cannot return nil for struct
-		return nilClientProxy, errors.New(name + " not found on the naming service.")
+		return nilClientProxy, errors.New(name + " not found.")
 	}
 	return clientProxy, nil
 }

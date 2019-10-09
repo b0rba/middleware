@@ -20,7 +20,7 @@ func (ePool *Pool) AddToPool(serv interface{}) {
 // GetFromPool get a servant from the pool.
 func (ePool *Pool) GetFromPool() interface{} {
 	if len(ePool.Servants) <= 0 {
-		utils.PrintError(errors.New("empty pool"), "unable to get object from empty pool.")
+		utils.PrintError(errors.New("empty pool"), "unable to get object because the pool is empty.")
 		return nil
 	}
 	servHolder := ePool.Servants[ePool.CurrentIdx]

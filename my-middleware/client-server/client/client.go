@@ -10,11 +10,11 @@ import (
 )
 
 // runExperiment run the experiment.
-func runExperiment(numberOfCalls int, waitGroup *sync.WaitGroup, calcValues *utils.CalcValues, start int) {
+func runExperiment(waitGroup *sync.WaitGroup, calcValues *utils.CalcValues, numberOfCalls int, start int) {
 	defer waitGroup.Done()
 	// getting the clientproxy
 	namingServer := proxies.InitServer("localhost")
-	echo := namingServer.Lookup("Echo").(proxies.EchoProxy)
+	echo := namingServer.Lookup("Ech").(proxies.EchoProxy)
 
 	// executing
 	for i := 0; i < numberOfCalls; i++ {
@@ -46,7 +46,7 @@ func main() {
 
 	for i := 0; i < aux; i++ {
 		waitGroup.Add(1)
-		go runExperiment(perCall, &waitGroup, &calcValues, (i * perCall))
+		go runExperiment(&waitGroup, &calcValues, numberOfCalls, i * perCall)
 		waitGroup.Wait()
 	}
 

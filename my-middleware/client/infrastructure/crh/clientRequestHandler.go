@@ -37,7 +37,7 @@ func (clientRequestHandler CRH) SendReceive(msgToServer []byte) []byte {
 	msg2ServeSize := make([]byte, 4)
 	length := uint32(len(msgToServer))
 	binary.LittleEndian.PutUint32(msg2ServeSize, length)
-	conn.Write(msg2ServeSize)
+	_, _ = conn.Write(msg2ServeSize)
 	utils.PrintError(err, "unable to write size to server on client request handler")
 
 	// send message

@@ -26,14 +26,7 @@ func (echoProxy EchoProxy) Ech(input string) string {
 	return result
 }
 
-// NewEchoProxy is a function to instantiate a new echoer based on clientproxy.
-//
-// Parameters:
-//  cp - the clientproxy.
-//
-// Returns:
-//  a EchoProxy.
-//
+// NewEchoProxy instantiate a new echoer based on clientproxy.
 func NewEchoProxy(clientProxy clientproxy.ClientProxy) EchoProxy {
 	return EchoProxy{Host: clientProxy.Host, Port: clientProxy.Port, ID: clientProxy.ID}
 }

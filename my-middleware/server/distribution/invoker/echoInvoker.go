@@ -28,7 +28,7 @@ func (EchoInvoker) Invoke (){
 	echoPool := pooling.InitPool(echoList)
 	defer pooling.EndPool(echoPool)
 
-	fmt.Println("Server invoking.")
+	fmt.Println("Invoking Server.")
 
 	for {
 		serverRequestHandlerImpl := srh.SRH{ServerHost: "localhost", ServerPort:8080}
@@ -51,7 +51,7 @@ func (EchoInvoker) Invoke (){
 			replyParams[0] = echo1.Ech(packetRequest)
 		}
 
-		// assembly packet
+		// assemble packet
 		replyHeader := packet.ReplyHeader{Context: "", RequestID: packetPacketRequest.Bd.ReqHeader.RequestID, Status:1}
 		replyBody := packet.ReplyBody{OperationResult: replyParams}
 		header    := packet.Header{Magic:"packet", Version:"1.0", ByteOrder:true, MessageType:0} // MessageType 0 = reply
