@@ -8,14 +8,7 @@ import (
 	"github.com/b0rba/middleware/my-middleware/common/utils"
 )
 
-// SRH is a structure for Server to Client setups.
-//
-// Members:
-//  ServerHost - server host IP.
-//  ServerPort - server host port.
-//  conn       - the connection of the srh.
-//  listener         - the listener of the srh.
-//
+// SRH Server to Client setups.
 type SRH struct {
 	ServerHost string
 	ServerPort int
@@ -23,14 +16,7 @@ type SRH struct {
 	listener   net.Listener
 }
 
-// Receive is a funcion that listens for messages
-//
-// Parameters:
-// none
-//
-// Returns:
-// Message received from client
-//
+// Receive listener for messages
 func (serverRequestHandler *SRH) Receive() []byte {
 	var err error
 
@@ -57,14 +43,7 @@ func (serverRequestHandler *SRH) Receive() []byte {
 	return message
 }
 
-// Send is a funcion that sends a message to a client
-//
-// Parameters:
-// msgToClient - A byte package to be sent to a client
-//
-// Returns:
-// none
-//
+// Send sends a message to a client
 func (serverRequestHandler *SRH) Send(msgToClient []byte) {
 	// close connection
 	defer serverRequestHandler.conn.Close()

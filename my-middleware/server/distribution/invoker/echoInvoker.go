@@ -38,8 +38,7 @@ func (EchoInvoker) Invoke (){
 
 		// 	unmarshall
 		packetPacketRequest := marshallerImpl.Unmarshall(receiverMessageBytes)
-		
-		
+
 		// setup request
 		packetRequest := int(packetPacketRequest.Bd.ReqBody.Body[0].(float64))
 		var echo1 *echoer.Echo
